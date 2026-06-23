@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Games League</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Group Chat Championship</p>
+      <h1>Daily Games League</h1>
+      <p class="subtitle">Putt.Day, GeoSports, GeoHistory, and whatever else ruins friendships.</p>
+    </div>
+    <div class="champ-card">
+      <span>Current Champion</span>
+      <strong id="currentChampion">Loading...</strong>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel wide">
+      <div class="panel-header">
+        <h2>Season Standings</h2>
+        <span id="lastUpdated"></span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th><th>Games</th><th>Avg Finish</th></tr>
+        </thead>
+        <tbody id="standingsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Enter Scores</h2>
+      <form id="scoreForm">
+        <label>Date <input type="date" name="date" required /></label>
+        <label>Game
+          <select name="game" required>
+            <option>Putt.Day</option>
+            <option>GeoSports</option>
+            <option>GeoHistory</option>
+          </select>
+        </label>
+        <label>Justin <input type="number" step="any" name="Justin" placeholder="score" /></label>
+        <label>Player 2 <input type="number" step="any" name="Player 2" placeholder="score" /></label>
+        <label>Player 3 <input type="number" step="any" name="Player 3" placeholder="score" /></label>
+        <label>Lower score wins?
+          <select name="lowerWins">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </label>
+        <button type="submit">Submit Scores</button>
+        <p id="formStatus"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Latest Results</h2>
+      <div id="latestResults" class="cards"></div>
+    </section>
+
+    <section class="panel wide">
+      <h2>Hall of Fame</h2>
+      <div class="trophies">
+        <div><span>🔥 Hottest Player</span><strong id="hotPlayer">Loading...</strong></div>
+        <div><span>💀 Last Place</span><strong id="lastPlace">Loading...</strong></div>
+        <div><span>🏆 Most Wins</span><strong id="mostWins">Loading...</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
