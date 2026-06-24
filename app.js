@@ -79,7 +79,6 @@ document.getElementById('standingsBody').innerHTML = standings.map((s, i) => `
       <td>${s.wins}</td>
       ${showPerGameWins ? `<td>${s.puttWins}</td><td>${s.geoSportsWins}</td><td>${s.geoHistoryWins}</td>` : ''}
       <td>${s.games}</td>
-      <td>${s.games ? (s.finishTotal / s.games).toFixed(2) : '-'}</td>
       ${showScoreColumns ? `<td>${s.games ? (s.scoreTotal / s.games).toFixed(1) : '-'}</td><td>${s.bestScore ?? '-'}</td>` : ''}
     </tr>
   `).join('');
