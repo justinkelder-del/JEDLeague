@@ -22,9 +22,17 @@
   <main class="layout">
     <section class="panel wide">
       <div class="panel-header">
-        <h2>Season Standings</h2>
-        <span id="lastUpdated"></span>
-      </div>
+  <h2>Season Standings</h2>
+  <div style="display:flex; gap:.75rem; align-items:center;">
+    <select id="gameFilter">
+      <option value="all">All Games</option>
+      <option>Putt.Day</option>
+      <option>GeoSports</option>
+      <option>GeoHistory</option>
+    </select>
+    <span id="lastUpdated"></span>
+  </div>
+</div>
       <table>
         <thead>
           <tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th><th>Games</th><th>Avg Finish</th></tr>
