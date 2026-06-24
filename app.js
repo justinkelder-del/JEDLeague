@@ -82,6 +82,43 @@ document.getElementById('standingsBody').innerHTML = standings.map((s, i) => `
   document.getElementById('latestResults').innerHTML = rows.slice(-6).reverse().map(r => `
     <div class="result-card"><strong>${r.Date} · ${r.Game}</strong><br>${r.Player}: ${r.RawScore} · Rank ${r.Rank} · ${r.Points} pts</div>
   `).join('');
+  const gameNames = [...new Set(allRows.map(r => r.Game))];
+  const breakdownSection = document.getElementById('gameBreakdownSection');
+  if (isSingleGame) {
+    breakdownSection.style.display = 'none';
+  } else {
+    breakdownSection.style.display = '';
+    document.getElementById('gameBreakdown').innerHTML = gameNames.map(game => {
+      const gameRows = allRows.filter(r => r.Game === game);
+      const isLower = ['Putt.Day'].includes(game);
+      const playerBests = cfg.players.map(p => {
+        const playerRows = gameRows.filter(r => r.Player === p);
+        if (!playerRows.length) return { player: p, best: '-', avg: '-' };
+        const scores = playerRows.map(r => Number(r.RawScore));
+        const best = isLower ? Math.min(...scores) : Math.max(...scores);
+        const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+        return { player: p, best, avg };
+      }).sort((a, b) => {
+        if (a.best === '-') return 1;
+        if (b.best === '-') return -1;
+        return isLower ? a.best - b.best : b.best - a.best;
+      });
+
+      return `
+        <div style="margin-bottom:1.5rem">
+          <h3 style="color:var(--accent);margin-bottom:.75rem">${game}</h3>
+          <table>
+            <thead><tr><th>Player</th><th>Best Score</th><th>Avg Score</th></tr></thead>
+            <tbody>
+              ${playerBests.map(p => `
+                <tr><td>${p.player}</td><td>${p.best}</td><td>${p.avg}</td></tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 document.getElementById('scoreForm').addEventListener('submit', async (e) => {
