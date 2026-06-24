@@ -1,4 +1,5 @@
 const cfg = window.LEAGUE_CONFIG;
+let allRows = [];
 const today = new Date().toISOString().slice(0, 10);
 document.querySelector('input[name="date"]').value = today;
 
@@ -9,8 +10,8 @@ async function loadScores() {
   }
   const res = await fetch(cfg.sheetCsvUrl + '&cachebust=' + Date.now(), { cache: 'no-store' });
   const text = await res.text();
-  const rows = csvToObjects(text);
-  renderDashboard(rows);
+  allRows = csvToObjects(text);
+renderDashboard(allRows);
 }
 
 function csvToObjects(csv) {
@@ -81,6 +82,11 @@ document.getElementById('scoreForm').addEventListener('submit', async (e) => {
   } catch (err) {
     document.getElementById('formStatus').textContent = 'Could not submit. Check Apps Script URL.';
   }
+});
+document.getElementById('gameFilter').addEventListener('change', () => {
+  const filter = document.getElementById('gameFilter').value;
+  const filtered = filter === 'all' ? allRows : allRows.filter(r => r.Game === filter);
+  renderDashboard(filtered);
 });
 
 loadScores();
