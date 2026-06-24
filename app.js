@@ -7,7 +7,7 @@ async function loadScores() {
     document.getElementById('standingsBody').innerHTML = '<tr><td colspan="6">Add your Google Sheet CSV URL in config.js.</td></tr>';
     return;
   }
-  const res = await fetch(cfg.sheetCsvUrl + '&cachebust=' + Date.now());
+  const res = await fetch(cfg.sheetCsvUrl + '&cachebust=' + Date.now(), { cache: 'no-store' });
   const text = await res.text();
   const rows = csvToObjects(text);
   renderDashboard(rows);
