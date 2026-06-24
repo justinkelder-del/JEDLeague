@@ -39,7 +39,7 @@ function renderDashboard(rows) {
   const isSingleGame = games.length === 1;
   const lowerWins = isSingleGame && ['Putt.Day'].includes(games[0]);
   const stats = {};
-  cfg.players.forEach(p => stats[p] = { player:p, points:0, wins:0, games:0, finishTotal:0, last7:0, scoreTotal:0, bestScore:null });
+  cfg.players.forEach(p => stats[p] = { player:p, points:0, wins:0, games:0, finishTotal:0, last7:0, scoreTotal:0, bestScore:null, puttWins:0, geoSportsWins:0, geoHistoryWins:0 });
   const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   rows.forEach(r => {
@@ -49,7 +49,12 @@ function renderDashboard(rows) {
     stats[p].points += pts;
     stats[p].games += 1;
     stats[p].finishTotal += rank;
-    if (rank === 1) stats[p].wins += 1;
+    if (rank === 1) {
+  stats[p].wins += 1;
+  if (r.Game === 'Putt.Day') stats[p].puttWins += 1;
+  if (r.Game === 'GeoSports') stats[p].geoSportsWins += 1;
+  if (r.Game === 'GeoHistory') stats[p].geoHistoryWins += 1;
+}
 if (new Date(r.Date) >= sevenDaysAgo) stats[p].last7 += pts;
 const rawScore = Number(r.RawScore);
 stats[p].scoreTotal += rawScore;
@@ -62,12 +67,17 @@ else stats[p].bestScore = Math.max(stats[p].bestScore, rawScore);
   const showScoreColumns = isSingleGame;
 document.getElementById('avgScoreHeader').style.display = showScoreColumns ? '' : 'none';
 document.getElementById('bestScoreHeader').style.display = showScoreColumns ? '' : 'none';
+const showPerGameWins = !isSingleGame;
+document.getElementById('puttWinsHeader').style.display = showPerGameWins ? '' : 'none';
+document.getElementById('geoSportsWinsHeader').style.display = showPerGameWins ? '' : 'none';
+document.getElementById('geoHistoryWinsHeader').style.display = showPerGameWins ? '' : 'none';
 document.getElementById('standingsBody').innerHTML = standings.map((s, i) => `
     <tr>
       <td>${i+1}</td>
       <td>${s.player}</td>
       <td>${s.points}</td>
       <td>${s.wins}</td>
+      ${showPerGameWins ? `<td>${s.puttWins}</td><td>${s.geoSportsWins}</td><td>${s.geoHistoryWins}</td>` : ''}
       <td>${s.games}</td>
       <td>${s.games ? (s.finishTotal / s.games).toFixed(2) : '-'}</td>
       ${showScoreColumns ? `<td>${s.games ? (s.scoreTotal / s.games).toFixed(1) : '-'}</td><td>${s.bestScore ?? '-'}</td>` : ''}
